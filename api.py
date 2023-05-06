@@ -120,7 +120,7 @@ async def embedding(request: Request):
     return {'data': data, 'model': 'text2vec-large-chinese', 'object': 'embedding'}
 
 
-@ app.post('/tokenize')
+@app.post('/tokenize')
 async def tokenize(request: Request):
     global model, tokenizer
 
@@ -135,6 +135,9 @@ async def tokenize(request: Request):
                          max_length=max_length)['input_ids']
     return {'tokenIds': tokenIds, 'tokens': tokens}
 
+@app.get("/healthcheck")
+def healthcheck():
+    return {"status": "ok"}
 
 if __name__ == '__main__':
     # load GLM 6B
