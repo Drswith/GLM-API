@@ -150,4 +150,4 @@ if __name__ == '__main__':
     # load embedding model
     encoder = SentenceModel('GanymedeNil/text2vec-large-chinese')
     # start fastapi
-    uvicorn.run(app, host='0.0.0.0', port=8000)
+    uvicorn.run(app, host='0.0.0.0', port=9000)
