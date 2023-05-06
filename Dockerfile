@@ -1,6 +1,6 @@
 FROM pytorch/pytorch:1.13.1-cuda11.6-cudnn8-runtime
 
-ARG WORK_DIR=/usr/src/app
+ARG WORK_DIR=/home/app
 
 WORKDIR $WORK_DIR
 
