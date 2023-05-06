@@ -139,9 +139,9 @@ async def tokenize(request: Request):
 if __name__ == '__main__':
     # load GLM 6B
     tokenizer = AutoTokenizer.from_pretrained(
-        'THUDM/chatglm-6b', trust_remote_code=True)
+        'THUDM/chatglm-6b', cache_dir='./', trust_remote_code=True)
     model = AutoModel.from_pretrained(
-        'THUDM/chatglm-6b', trust_remote_code=True).half().cuda('cuda:0')
+        'THUDM/chatglm-6b', cache_dir='./', trust_remote_code=True).half().cuda('cuda:0')
     model.eval()
 
     # load embedding model
