@@ -1,6 +1,7 @@
 import uvicorn
 import json
 import torch
+import os
 
 from text2vec import SentenceModel
 from fastapi import FastAPI, Request
@@ -13,6 +14,7 @@ MAX_LENGTH = 4096
 TOP_P = 0.7
 TEMPERATURE = 0.95
 
+offline_models_path = os.environ.get('OFFLINE_MODELS')
 
 # def torch_gc():
 #     if torch.cuda.is_available():
@@ -141,13 +143,22 @@ def healthcheck():
 
 if __name__ == '__main__':
     # load GLM 6B
+    # tokenizer = AutoTokenizer.from_pretrained(
+    #     'THUDM/chatglm-6b', trust_remote_code=True)
+    # model = AutoModel.from_pretrained(
+    #     'THUDM/chatglm-6b', trust_remote_code=True).half().cuda('cuda:0')
+
     tokenizer = AutoTokenizer.from_pretrained(
-        'THUDM/chatglm-6b', cache_dir='./', trust_remote_code=True)
+        os.path.join(offline_models_path, 'chatglm-6b') if offline_models_path else 'THUDM/chatglm-6b', trust_remote_code=True)
     model = AutoModel.from_pretrained(
-        'THUDM/chatglm-6b', cache_dir='./', trust_remote_code=True).half().cuda('cuda:0')
+        os.path.join(offline_models_path, 'chatglm-6b') if offline_models_path else 'THUDM/chatglm-6b', trust_remote_code=True).half().cuda('cuda:0')
+    
     model.eval()
 
     # load embedding model
-    encoder = SentenceModel('GanymedeNil/text2vec-large-chinese')
+    # encoder = SentenceModel('GanymedeNil/text2vec-large-chinese')
+
+    encoder = SentenceModel(os.path.join(offline_models_path, 'text2vec-large-chinese') if offline_models_path else 'GanymedeNil/text2vec-large-chinese')
+    
     # start fastapi
     uvicorn.run(app, host='0.0.0.0', port=9000)
