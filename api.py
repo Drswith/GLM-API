@@ -14,12 +14,23 @@ TOP_P = 0.7
 TEMPERATURE = 0.95
 
 
+# def torch_gc():
+#     if torch.cuda.is_available():
+#         with torch.cuda.device('cuda:0'):
+#             torch.cuda.empty_cache()
+#             torch.cuda.ipc_collect()
+#         with torch.cuda.device('cuda:1'):
+#             torch.cuda.empty_cache()
+#             torch.cuda.ipc_collect()
+
+DEVICE = "cuda"
+DEVICE_ID = "0"
+CUDA_DEVICE = f"{DEVICE}:{DEVICE_ID}" if DEVICE_ID else DEVICE
+
+
 def torch_gc():
     if torch.cuda.is_available():
-        with torch.cuda.device('cuda:0'):
-            torch.cuda.empty_cache()
-            torch.cuda.ipc_collect()
-        with torch.cuda.device('cuda:1'):
+        with torch.cuda.device(CUDA_DEVICE):
             torch.cuda.empty_cache()
             torch.cuda.ipc_collect()
 
